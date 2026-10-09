@@ -1,0 +1,18 @@
+# Fills the sheet (phone + card, billing is prefilled) and taps Pay, then stops so a person
+# can take over, e.g. at a 3DS challenge. Override the card with -e NUMBER=.
+appId: com.paysio.example
+env:
+  NUMBER: "4111111111111111"
+---
+- runFlow: open_sheet.yaml
+- runFlow:
+    file: fill_card.yaml
+    env:
+      NUMBER: ${NUMBER}
+      EXPIRY: "1230"
+      CVC: "123"
+- scrollUntilVisible:
+    element:
+      text: "Pay .*"
+- tapOn:
+    text: "Pay .*"

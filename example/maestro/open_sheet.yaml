@@ -1,0 +1,22 @@
+# Opens the payment sheet against production with the sandbox slug in ${SLUG}.
+# Run: maestro test -e SLUG=<slug> maestro/open_sheet.yaml
+appId: com.paysio.example
+---
+- launchApp:
+    clearState: true
+- tapOn: "Production"
+- tapOn:
+    id: "slug"
+- inputText: ${SLUG}
+# The slug field uses ImeAction.Done, which clears focus and closes the keyboard.
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: "open-sheet"
+- tapOn:
+    id: "open-sheet"
+- extendedWaitUntil:
+    visible:
+      text: "Pay .*"
+    timeout: 30000
+- takeScreenshot: open_sheet
